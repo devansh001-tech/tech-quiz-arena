@@ -1,31 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Performance Analyzer</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Quiz Arena</title>
 <style>
-:root{--bg:#f4f6fb;--card:#fff;--ink:#19233b;--muted:#68738b;--purple:#6258e8;--line:#e5e9f2}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}.wrap{width:min(1120px,94%);margin:30px auto}
-header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}h1{margin:0;font-size:clamp(1.6rem,4vw,2.4rem)}header p{color:var(--muted);margin:8px 0 0}.tag{background:#e8e7ff;color:#4b42c5;border-radius:30px;padding:10px 14px;font-weight:700}
-.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.card{background:var(--card);padding:22px;border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px #25335a08}.card h2{font-size:1.1rem;margin:0 0 18px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:6px}input{width:100%;padding:11px;border:1px solid #d7ddec;border-radius:10px;font:inherit;color:var(--ink)}.btn{background:var(--purple);color:white;border:0;padding:12px 16px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:12px}.btn.secondary{background:#edefff;color:#4b42c5}.tablewrap{overflow:auto;margin-top:16px}table{width:100%;border-collapse:collapse;min-width:350px}th,td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--line);font-size:.92rem}th{color:var(--muted);font-weight:600}.remove{border:0;background:#fff0f1;color:#c43b4b;border-radius:7px;padding:5px 8px;cursor:pointer}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{background:#f8f8ff;border:1px solid #e7e7ff;border-radius:14px;padding:16px}.stat span{color:var(--muted);font-size:.84rem}.stat strong{display:block;font-size:1.8rem;margin-top:8px}.note{color:var(--muted);font-size:.9rem;line-height:1.5}.chart{height:235px;display:flex;align-items:end;gap:10px;padding:18px 4px 28px;border-bottom:1px solid var(--line);margin-top:10px}.barcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;min-width:0;gap:7px}.bar{width:min(42px,80%);background:linear-gradient(180deg,#8b83ff,#6258e8);border-radius:8px 8px 3px 3px;min-height:3px;transition:height .3s}.barcol small{font-size:.75rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;max-width:100%}.barcol b{font-size:.75rem}.insight{background:#eefbf6;border:1px solid #d2f3e5;padding:14px;border-radius:12px;color:#17684d;line-height:1.5;margin-top:14px}.full{grid-column:1/-1}.empty{color:var(--muted);padding:20px 0}.foot{font-size:.8rem;color:var(--muted);text-align:center;margin:22px 0}
-@media(max-width:780px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.formgrid{grid-template-columns:1fr 1fr}}
-</style></head><body><div class="wrap">
-<header><div><h1>📊 Student Performance Analyzer</h1><p>Turn marks into insights. A simple data analytics dashboard.</p></div><div class="tag">STUDENT DATA LAB</div></header>
-<div class="grid">
-<section class="card"><h2>Add student marks</h2><div class="formgrid"><div><label for="name">Student name</label><input id="name" placeholder="e.g. Aanya"></div><div><label for="subject">Subject</label><input id="subject" placeholder="e.g. DBMS"></div><div><label for="marks">Marks (0–100)</label><input id="marks" type="number" min="0" max="100" placeholder="85"></div><div><label for="max">Out of</label><input id="max" type="number" min="1" value="100"></div></div><button class="btn" id="add">+ Add result</button><button class="btn secondary" id="demo">Load demo data</button><div class="tablewrap"><table><thead><tr><th>Student</th><th>Subject</th><th>Score</th><th></th></tr></thead><tbody id="rows"></tbody></table></div><p class="note">Demo data is sample data. Add your own results to explore the dashboard.</p></section>
-<section class="card"><h2>Performance overview</h2><div class="stats"><div class="stat"><span>Average score</span><strong id="avg">—</strong></div><div class="stat"><span>Highest score</span><strong id="high">—</strong></div><div class="stat"><span>Results entered</span><strong id="total">0</strong></div><div class="stat"><span>Pass rate (≥40%)</span><strong id="pass">—</strong></div></div><h2 style="margin-top:24px">Subject-wise scores</h2><div class="chart" id="chart"><div class="empty">Add results to see the chart.</div></div><div class="insight" id="insight">💡 Add student marks to generate a performance insight.</div></section>
-<section class="card full"><h2>How to read the dashboard</h2><p class="note">The average summarises overall performance. Highest score identifies the strongest result. Pass rate shows the percentage of entered results scoring at least 40%. The chart displays each result as a percentage, so scores out of different totals can be compared.</p></section>
-</div><div class="foot">Built with HTML, CSS & JavaScript · Sample analytics for learning</div></div>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#10152f,#263b73);color:#fff;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.card{background:#fff;color:#20294a;width:100%;max-width:600px;padding:28px;border-radius:20px;box-shadow:0 12px 35px #0005}
+h1{text-align:center;color:#5548d9;margin-top:0}
+.info{display:flex;justify-content:space-between;color:#555;font-weight:bold;margin:20px 0}
+#question{font-size:21px;margin:24px 0}
+button{cursor:pointer;border:0;border-radius:10px;padding:13px;font-size:16px}
+.option{display:block;width:100%;text-align:left;margin:10px 0;background:#eef0ff;color:#20294a;border:2px solid transparent}
+.option:hover{border-color:#6658e8}
+.option:disabled{cursor:default}
+#next,#restart{background:#5548d9;color:white;width:100%;margin-top:15px}
+#feedback{text-align:center;font-weight:bold;min-height:24px}
+#result{text-align:center}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>⚡ Tech Quiz Arena</h1>
+<div id="game">
+<div class="info"><span id="progress">Question 1/10</span><span>⏱️ <span id="timer">15</span>s</span><span>Score: <span id="score">0</span></span></div>
+<div id="question"></div>
+<div id="options"></div>
+<p id="feedback"></p>
+<button id="next" onclick="nextQuestion()" disabled>Next Question →</button>
+</div>
+<div id="result" class="hidden">
+<h2>Quiz Completed! 🎉</h2>
+<h2 id="finalScore"></h2>
+<p id="message"></p>
+<button id="restart" onclick="restartQuiz()">Play Again</button>
+</div>
+</div>
 <script>
-let results=[];const $=id=>document.getElementById(id);
-function addResult(name,subject,marks,max){if(!name||!subject||!Number.isFinite(marks)||!Number.isFinite(max)||max<=0||marks<0||marks>max){alert("Enter a name, subject, valid marks, and a positive maximum score.");return}results.push({name,subject,marks,max,id:Date.now()+Math.random()});render()}
-$("add").onclick=()=>{addResult($("name").value.trim(),$("subject").value.trim(),Number($("marks").value),Number($("max").value));if(results.length){$("name").value="";$("subject").value="";$("marks").value="";$("max").value="100"}};
-$("demo").onclick=()=>{results=[{name:"Aanya",subject:"DBMS",marks:82,max:100,id:1},{name:"Rohan",subject:"DSA",marks:67,max:100,id:2},{name:"Aanya",subject:"Statistics",marks:91,max:100,id:3},{name:"Kabir",subject:"DBMS",marks:38,max:100,id:4},{name:"Meera",subject:"DSA",marks:76,max:100,id:5}];render()};
-function render(){const rows=$("rows");rows.innerHTML="";results.forEach(r=>{const tr=document.createElement("tr");tr.innerHTML=`<td></td><td></td><td></td><td><button class="remove">Remove</button></td>`;tr.children[0].textContent=r.name;tr.children[1].textContent=r.subject;tr.children[2].textContent=`${r.marks}/${r.max} (${(r.marks/r.max*100).toFixed(0)}%)`;tr.querySelector("button").onclick=()=>{results=results.filter(x=>x.id!==r.id);render()};rows.appendChild(tr)});
-const n=results.length;$("total").textContent=n;if(!n){$("avg").textContent=$("high").textContent=$("pass").textContent="—";$("chart").innerHTML='<div class="empty">Add results to see the chart.</div>';$("insight").textContent="💡 Add student marks to generate a performance insight.";return}
-const p=results.map(r=>r.marks/r.max*100),avg=p.reduce((a,b)=>a+b,0)/n,high=Math.max(...p),pass=p.filter(x=>x>=40).length/n*100;$("avg").textContent=avg.toFixed(1)+"%";$("high").textContent=high.toFixed(0)+"%";$("pass").textContent=pass.toFixed(0)+"%";
-$("chart").innerHTML="";results.forEach((r,i)=>{const col=document.createElement("div");col.className="barcol";const b=document.createElement("div");b.className="bar";b.style.height=Math.max(3,p[i])+"%";b.title=`${r.name} — ${r.subject}: ${p[i].toFixed(1)}%`;const val=document.createElement("b");val.textContent=p[i].toFixed(0)+"%";const label=document.createElement("small");label.textContent=r.subject;label.title=r.subject;col.append(b,val,label);$("chart").appendChild(col)});
-const low=results[p.indexOf(Math.min(...p))];$("insight").textContent=avg>=75?"🌟 Great overall performance! Keep maintaining this level.":avg>=50?"📈 Good progress. Focus on the lower-scoring subjects to improve the average.":"💡 The average needs attention. Start by revising topics from the lowest-scoring result: "+low.subject+" ("+low.name+")."}
-render();
-</script></body></html>
+const questions=[
+{q:"Which language is used to structure web pages?",o:["Python","HTML","Java","C++"],a:1},
+{q:"What does CPU stand for?",o:["Central Processing Unit","Computer Personal Unit","Central Program Utility","Control Processing User"],a:0},
+{q:"Which one is a JavaScript data type?",o:["Number","Website","Keyboard","Browser"],a:0},
+{q:"Which data structure follows FIFO?",o:["Stack","Tree","Queue","Graph"],a:2},
+{q:"What does CSS control?",o:["Database storage","Web page styling","Computer hardware","Network speed"],a:1},
+{q:"Which symbol starts a single-line comment in Java?",o:["<!--","//","##","**"],a:1},
+{q:"Which of these is a database?",o:["MySQL","HTML","CSS","Windows"],a:0},
+{q:"What is the binary representation of decimal 2?",o:["00","01","10","11"],a:2},
+{q:"Which loop checks its condition before each iteration?",o:["while loop","do-while loop only","No loop","None of these"],a:0},
+{q:"What does URL stand for?",o:["Universal Record Link","Uniform Resource Locator","Unified Reference List","User Routing Link"],a:1}
+];
+let index=0,score=0,time=15,interval,answered=false;
+function showQuestion(){
+answered=false;time=15;
+document.getElementById("timer").textContent=time;
+document.getElementById("progress").textContent=`Question ${index+1}/${questions.length}`;
+document.getElementById("score").textContent=score;
+document.getElementById("question").textContent=questions[index].q;
+document.getElementById("feedback").textContent="";
+document.getElementById("next").disabled=true;
+const box=document.getElementById("options");box.innerHTML="";
+questions[index].o.forEach((option,i)=>{
+const b=document.createElement("button");
+b.className="option";b.textContent=String.fromCharCode(65+i)+". "+option;
+b.onclick=()=>chooseAnswer(i);
+box.appendChild(b);
+});
+clearInterval(interval);
+interval=setInterval(()=>{
+time--;document.getElementById("timer").textContent=time;
+if(time<=0){clearInterval(interval);if(!answered)chooseAnswer(-1);}
+},1000);
+}
+function chooseAnswer(choice){
+if(answered)return;
+answered=true;clearInterval(interval);
+const q=questions[index];
+document.querySelectorAll(".option").forEach((b,i)=>{
+b.disabled=true;
+if(i===q.a)b.style.background="#c8f7d2";
+else if(i===choice)b.style.background="#ffcaca";
+});
+const feedback=document.getElementById("feedback");
+if(choice===q.a){score++;feedback.textContent="Correct! 🎉";feedback.style.color="green";}
+else{feedback.textContent=choice===-1?"Time's up!":"Incorrect. Correct answer: "+q.o[q.a];feedback.style.color="#d33";}
+document.getElementById("score").textContent=score;
+document.getElementById("next").disabled=false;
+document.getElementById("next").textContent=index===questions.length-1?"See Result":"Next Question →";
+}
+function nextQuestion(){
+if(!answered)return;
+if(index<questions.length-1){index++;showQuestion();}
+else{
+clearInterval(interval);
+document.getElementById("game").classList.add("hidden");
+document.getElementById("result").classList.remove("hidden");
+document.getElementById("finalScore").textContent=`Your Score: ${score}/${questions.length}`;
+document.getElementById("message").textContent=score>=8?"Excellent work! 🌟":score>=5?"Good effort! Keep practising.":"Keep learning and try again!";
+}
+}
+function restartQuiz(){
+index=0;score=0;
+document.getElementById("result").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
+document.getElementById("next").textContent="Next Question →";
+showQuestion();
+}
+showQuestion();
+</script>
+</body>
+</html>
